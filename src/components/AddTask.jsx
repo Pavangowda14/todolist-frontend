@@ -10,30 +10,18 @@ const AddTask = ({
   projectId,
   setAddTaskIsOpen,
   setEditTaskId,
-  task,
+  localTask,
   updateTask,
   addTask,
   editTaskId,
-  setTask,
+  setLocalTask,
 }) => {
-  const [localTask, setLocalTask] = useState({
-    content: "",
-    description: "",
-    due_date: "",
-    priority: 1,
-    project_id: projectId,
-  });
+  
   const { projects } = useProjects();
 
-  useEffect(() => {
-    if (task) {
-      setLocalTask(task);
-    }
-  }, [task]);
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
-    console.log(name,value)
     setLocalTask((prev) => ({
       ...prev,
       [name]: value,
@@ -55,7 +43,7 @@ const AddTask = ({
 
   const handleTaskCancelBtn = () => {
     setEditTaskId ? setEditTaskId(null) : setAddTaskIsOpen(false);
-    setTask({
+    setLocalTask({
       content: "",
       description: "",
       due_date: "",
@@ -149,6 +137,7 @@ const AddTask = ({
             type="text"
             onClick={handleTaskAddBtn}
             className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black"
+            disabled={localTask.content.length==0}
           >
             {updateTask ? "Save" : "Add task"}
           </Button>

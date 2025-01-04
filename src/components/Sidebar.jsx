@@ -5,6 +5,7 @@ import TaskModal from "./TaskModal";
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import useProjects from "../context/ProjectContext";
 import {PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const api = new TodoistApi("a16d266303c18f963a53ff4e13fa2e4304250c47");
 
@@ -18,6 +19,8 @@ const Sidebar = () => {
     setIsTaskModalOpen(true);
   };
 
+  const navigate=useNavigate()
+  const inboxId=projects.find((project)=>project.isInboxProject)?.id
   const allprojects=projects.filter((project)=>!project.isInboxProject)
   const favoriteProjects=projects.filter((project)=>project.isFavorite)
   
@@ -38,7 +41,7 @@ const Sidebar = () => {
           <div className="flex items-center justify-center bg-orange-600 text-white rounded-full px-[5px] py-[4px] text-md"><PlusOutlined /></div>
           <span className="text-orange-600 font-semibold">Add task</span>
         </Button>
-        <Button color="default" variant="link" className="inline text-start">
+        <Button onClick={()=>{navigate(`/project/${inboxId}`)}} color="default" variant="link" className="inline text-start">
           Inbox
         </Button>
        {favoriteProjects && (favoriteProjects.length>0) && <ProjectsList title="Favorite" projectList={favoriteProjects} />} 

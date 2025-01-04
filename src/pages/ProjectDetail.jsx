@@ -46,13 +46,12 @@ const ProjectDetail = () => {
   }, [id]);
 
   const handleEditBtn = (task) => {
-    console.log("Editing task:", task);
     setTask({
       content: task.content,
       description: task.description,
       due_date: task.due?.due_date,
       priority: task.priority,
-      project_id: task.project_id,
+      project_id: task.projectId,
     });
     setAddTaskIsOpen(true);
     setEditTaskId(task.id);
@@ -70,36 +69,36 @@ const ProjectDetail = () => {
     <Flex gap="middle" vertical className="max-w-[700px] mx-auto">
       <h2 className="text-xl font-bold">{projectDetail.name}</h2>
       {tasks.length > 0 &&
-  tasks.map((task) => {
-    if (editTaskId === task.id) {
+  tasks.map((eachTask) => {
+    if (editTaskId === eachTask.id) {
       return (
         <AddTask
-          key={task.id}
+          key={eachTask.id}
           projectId={projectDetail.id}
           setAddTaskIsOpen={setAddTaskIsOpen}
           setEditTaskId={setEditTaskId}
           editTaskId={editTaskId}
-          task={task}
-          setTask={setTask}
+          localTask={task}
+          setLocalTask={setTask}
           updateTask={updateTask}
         />
       );
     }
 
     return (
-      <Flex key={task.id} gap="small" className="border-b-2 py-2 cursor-pointer">
-        <div onClick={()=>closeTask(task.id)} className="h-5 w-5 border-2 rounded-full group flex justify-center items-center"><CheckOutlined className="hidden text-xs text-gray-400 group-hover:inline"/></div>
+      <Flex key={eachTask.id} gap="small" className="border-b-2 py-2 cursor-pointer">
+        <div onClick={()=>closeTask(eachTask.id)} className="h-5 w-5 border-2 rounded-full group flex justify-center items-center"><CheckOutlined className="hidden text-xs text-gray-400 group-hover:inline"/></div>
         <Flex vertical>
-          <p>{task.content}</p>
-          {task.description && <p>{task.description}</p>}
-          {task.due && <p>{task.due.date}</p>}
+          <p>{eachTask.content}</p>
+          {eachTask.description && <p>{eachTask.description}</p>}
+          {eachTask.due && <p>{eachTask.due.date}</p>}
         </Flex>
         <Flex className="ml-auto">
-          <Button  type="text" onClick={() => handleEditBtn(task)}><EditOutlined /></Button>
+          <Button  type="text" onClick={() => handleEditBtn(eachTask)}><EditOutlined /></Button>
           <Button
           type="text"
             onClick={() => {
-              deleteTask(task.id);
+              deleteTask(eachTask.id);
             }}
           >
             <DeleteOutlined />
@@ -113,8 +112,8 @@ const ProjectDetail = () => {
         <AddTask
           projectId={projectDetail.id}
           setAddTaskIsOpen={setAddTaskIsOpen}
-          task={task}
-          setTask={setTask}
+          localTask={task}
+          setLocalTask={setTask}
           addTask={addTask}
         />
       ) : (
