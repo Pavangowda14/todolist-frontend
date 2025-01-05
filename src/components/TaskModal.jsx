@@ -15,7 +15,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
     project_id: "",
   });
 
-  const {id}=useParams()
+  const { id } = useParams();
 
   const { projects } = useProjects();
   const { addTask } = useTasks();
@@ -93,10 +93,21 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
               options={projectOptions}
             />
             <div>
-              <Button key="back" type="text" onClick={handleCancel} className="bg-gray-50 border-none hover:bg-gray-200 hover:text-black">
+              <Button
+                key="back"
+                type="text"
+                onClick={handleCancel}
+                className="bg-gray-50 border-none hover:bg-gray-200 hover:text-black"
+              >
                 Cancel
               </Button>
-              <Button key="submit" type="text" disabled={task.content.length==0 || task.project_id==""} className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black" onClick={handleOk}>
+              <Button
+                key="submit"
+                type="text"
+                disabled={task.content.length == 0 || task.project_id == ""}
+                className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black"
+                onClick={handleOk}
+              >
                 Add Task
               </Button>
             </div>
@@ -120,10 +131,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
           className="border-none outline-none focus:outline-none focus:border-0 focus:ring-0 text-xs"
         />
         <div className="flex space-x-2">
-          <DatePicker
-            placeholder="Due date"
-            onChange={onDateChange}
-          />
+          <DatePicker placeholder="Due date" onChange={onDateChange} />
           <Select
             placeholder="Priority"
             style={{

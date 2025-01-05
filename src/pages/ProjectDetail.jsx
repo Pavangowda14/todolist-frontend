@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import AddTask from "../components/AddTask";
 import { Button, Flex } from "antd";
 import { useParams } from "react-router-dom";
-import { TodoistApi } from "@doist/todoist-api-typescript";
 import useTasks from "../context/TaskContext";
-import TaskList from "../components/TaskList";
 import {EditOutlined, DeleteOutlined,PlusOutlined,CheckOutlined} from "@ant-design/icons"
+import useProjects from "../context/ProjectContext";
 
-const api = new TodoistApi("a16d266303c18f963a53ff4e13fa2e4304250c47");
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const [projectDetail, setProjectDetail] = useState(null);
   const [addTaskIsOpen, setAddTaskIsOpen] = useState(false);
   const { fetchTask, tasks, isLoading, addTask, deleteTask, updateTask, closeTask } = useTasks();
+  const {fetchSingleProject}=useProjects()
   const [editTaskId, setEditTaskId] = useState(null);
   const [task, setTask] = useState({
     content: "",
@@ -24,26 +23,27 @@ const ProjectDetail = () => {
   });
 
   useEffect(() => {
-    api
-      .getProject(id)
-      .then((project) => {
-        console.log(project);
-        setProjectDetail(project);
-      })
-      .catch((error) => console.log(error));
-    setTask({
-      content: "",
-      description: "",
-      due_date: "",
-      priority: 1,
-      project_id: id,
-    })
-    setAddTaskIsOpen(false);
-  }, [id]);
-
-  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const projectData = await fetchSingleProject(id);
+        setProjectDetail(projectData); // Set the project detail once data is fetched
+        setTask({
+          content: "",
+          description: "",
+          due_date: "",
+          priority: 1,
+          project_id: id,
+        });
+        setAddTaskIsOpen(false);
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+      }
+    };
+  
+    fetchData();
     fetchTask(id);
   }, [id]);
+  
 
   const handleEditBtn = (task) => {
     setTask({

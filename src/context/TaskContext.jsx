@@ -2,7 +2,7 @@ import React, { useState, createContext, useContext } from "react";
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
-const api = new TodoistApi("a16d266303c18f963a53ff4e13fa2e4304250c47");
+const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_KEY);
 
 const TaskContext = createContext();
 

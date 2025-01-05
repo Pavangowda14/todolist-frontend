@@ -21,7 +21,9 @@ const ProjectDropdown = ({ projectData }) => {
   };
 
   const updateFavoriteProject = () => {
-    upadteProject(projectData.id,{isFavorite:String(!(projectData.isFavorite))})
+    upadteProject(projectData.id, {
+      isFavorite: String(!projectData.isFavorite),
+    });
     setIsModalOpen(false);
   };
 
@@ -58,13 +60,11 @@ const ProjectDropdown = ({ projectData }) => {
             variant="link"
             onClick={updateFavoriteProject}
           >
-            {projectData.isFavorite ? "Remove from Favorite" : "Add to Favorite"}
+            {projectData.isFavorite
+              ? "Remove from Favorite"
+              : "Add to Favorite"}
           </Button>
-          <Button
-            color="default"
-            variant="link"
-            onClick={handleDeleteProject}
-          >
+          <Button color="default" variant="link" onClick={handleDeleteProject}>
             Delete
           </Button>
         </Flex>

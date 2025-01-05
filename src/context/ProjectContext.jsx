@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
-const api = new TodoistApi("a16d266303c18f963a53ff4e13fa2e4304250c47");
+const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_KEY);
 
 const ProjectContext = createContext();
 
@@ -10,8 +10,8 @@ export const ProjectProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchProjects = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const fetchedProjects = await api.getProjects();
       setProjects(fetchedProjects);
     } catch (error) {
@@ -20,6 +20,19 @@ export const ProjectProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+  const fetchSingleProject = async (id) => {
+    try {
+      setIsLoading(true);
+      const fetchedProject = await api.getProject(id);
+      return fetchedProject;
+    } catch (error) {
+      console.error("Error fetching project:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   const addProject = async (newProject) => {
     try {
@@ -33,7 +46,6 @@ export const ProjectProvider = ({ children }) => {
   const upadteProject = async (projectId, newProject) => {
     try {
       const updatedProject = await api.updateProject(projectId, newProject);
-      console.log(updatedProject)
       setProjects((prev) => prev.map((proj)=>(proj.id == projectId ? updatedProject : proj)));
     } catch (error) {
       console.error("Error updating project:", error);
@@ -63,6 +75,7 @@ export const ProjectProvider = ({ children }) => {
         addProject,
         deleteProject,
         upadteProject,
+        fetchSingleProject
       }}
     >
       {children}

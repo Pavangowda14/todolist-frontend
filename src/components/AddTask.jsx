@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Flex, DatePicker, Input, Select, Divider, Button } from "antd";
 import dayjs from "dayjs";
 import useProjects from "../context/ProjectContext";
@@ -16,9 +16,7 @@ const AddTask = ({
   editTaskId,
   setLocalTask,
 }) => {
-  
   const { projects } = useProjects();
-
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +27,6 @@ const AddTask = ({
   };
 
   const onDateChange = (date, dateString) => {
-    console.log(dateString)
     setLocalTask((prev) => ({ ...prev, due_date: dateString }));
   };
 
@@ -53,7 +50,7 @@ const AddTask = ({
   };
 
   const handleTaskAddBtn = () => {
-    console.log(localTask)
+    console.log(localTask);
     if (updateTask) {
       updateTask(editTaskId, localTask);
     } else {
@@ -61,7 +58,7 @@ const AddTask = ({
     }
     handleTaskCancelBtn();
   };
-  console.log(localTask)
+  console.log(localTask);
   return (
     <Flex gap="medium" vertical className="border-2 rounded-lg p-3">
       <TextArea
@@ -137,7 +134,7 @@ const AddTask = ({
             type="text"
             onClick={handleTaskAddBtn}
             className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black"
-            disabled={localTask.content.length==0}
+            disabled={localTask.content.length == 0}
           >
             {updateTask ? "Save" : "Add task"}
           </Button>

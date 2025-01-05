@@ -8,15 +8,12 @@ import {
 } from "@ant-design/icons";
 import useProjects from "../context/ProjectContext";
 import { getColorCode } from "../helper/color";
-
-import { TodoistApi } from "@doist/todoist-api-typescript";
 import ProjectDropdown from "./ProjectDropdown";
 import { useNavigate } from "react-router-dom";
 
-const api = new TodoistApi("a16d266303c18f963a53ff4e13fa2e4304250c47");
 
 const ProjectsList = ({ title, addProjectModal, projectList }) => {
-  const { addProject, deleteProject } = useProjects();
+  const { addProject } = useProjects();
   const [isOpen, setIsOpen] = useState(false);
   const [project, setProject] = useState({
     name: "",
