@@ -8,22 +8,20 @@ import {
   PlusOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
-import { useSelector,useDispatch } from "react-redux";
-import {
-  fetchTasks,
-  deleteTask,
-  closeTask,
-} from "../slice/taskSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTasks, deleteTask, closeTask } from "../slice/taskSlice";
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
 const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_KEY);
 
 const ProjectDetail = () => {
   const { id } = useParams();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const [projectDetail, setProjectDetail] = useState(null);
   const [addTaskIsOpen, setAddTaskIsOpen] = useState(false);
-  const { tasks, isLoading, error,completedTasks } = useSelector((state) => state.tasks);
+  const { tasks, isLoading, error, completedTasks } = useSelector(
+    (state) => state.tasks
+  );
 
   const [editTaskId, setEditTaskId] = useState(null);
   const [task, setTask] = useState({
@@ -37,13 +35,10 @@ const ProjectDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // setIsLoading(true);
         const fetchedProject = await api.getProject(id);
         setProjectDetail(fetchedProject);
       } catch (error) {
         console.error("Error fetching project:", error);
-      } finally {
-        // setIsLoading(false);
       }
     };
     setTask({
@@ -73,9 +68,13 @@ const ProjectDetail = () => {
   if (!projectDetail) {
     return <h1>Project not found</h1>;
   }
-  
+
   if (isLoading) {
     return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>error{error}</h1>;
   }
 
   return (
@@ -153,16 +152,22 @@ const ProjectDetail = () => {
           <span className="text-orange-600 font-semibold">Add task</span>
         </Button>
       )}
-       {completedTasks.length>0 && <List
-      size="small"
-      dataSource={completedTasks}
-      renderItem={(item) => <List.Item className="line-through"><Flex gap="small"><div
-        className="h-5 w-5 border-2 rounded-full flex justify-center items-center bg-gray-300"
-      >
-        <CheckOutlined className="text-xs text-white" />
-      </div>{item.content}</Flex></List.Item>}
-    />}
-
+      {completedTasks.length > 0 && (
+        <List
+          size="small"
+          dataSource={completedTasks}
+          renderItem={(item) => (
+            <List.Item className="line-through">
+              <Flex gap="small">
+                <div className="h-5 w-5 border-2 rounded-full flex justify-center items-center bg-gray-300">
+                  <CheckOutlined className="text-xs text-white" />
+                </div>
+                {item.content}
+              </Flex>
+            </List.Item>
+          )}
+        />
+      )}
     </Flex>
   );
 };

@@ -1,13 +1,17 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Flex, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { getColorCode } from "../helper/color";
-import { useSelector,useDispatch } from "react-redux";
-import { fetchProjects,addProject,updateProject,deleteProject } from "../slice/projectSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchProjects,
+  addProject,
+  updateProject,
+  deleteProject,
+} from "../slice/projectSlice";
 
 const Home = () => {
-
   const { projects, isLoading, error } = useSelector((state) => state.projects);
   const dispatch = useDispatch();
 
@@ -27,7 +31,7 @@ const Home = () => {
   }
 
   if (error) {
-    return <h1>{error}</h1>;
+    return <h1>error:{error}</h1>;
   }
 
   const allprojects = projects.filter(

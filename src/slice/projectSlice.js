@@ -22,9 +22,7 @@ export const addProject = createAsyncThunk("addProject", async (newProject) => {
 export const updateProject = createAsyncThunk(
   "updateProject",
   async ({projectId, newProject}) => {
-    console.log(projectId,newProject)
     const updatedProject = await api.updateProject(projectId, newProject);
-    console.log(updatedProject)
     return updatedProject;
   }
 );
