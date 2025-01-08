@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import useProjects from "../context/ProjectContext";
 import { Modal, DatePicker, Input, Select, Flex, Button, Divider } from "antd";
 const { TextArea } = Input;
 import { getColorCode } from "../helper/color";
-import useTasks from "../context/TaskContext";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask } from "../slice/taskSlice";
 
 const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
   const [task, setTask] = useState({
@@ -16,9 +16,8 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
   });
 
   const { id } = useParams();
-
-  const { projects } = useProjects();
-  const { addTask } = useTasks();
+  const dispatch = useDispatch();
+  const { projects } = useSelector((state) => state.projects);
 
   const handleProjectChange = (value) => {
     setTask((prev) => ({ ...prev, project_id: value }));
@@ -37,7 +36,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const handleOk = () => {
-    addTask(id, task);
+    dispatch(addTask({ id: id, newTask: task }));
     setIsModalOpen(false);
     resetTaskState();
   };

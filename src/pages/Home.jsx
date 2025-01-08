@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Flex, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import useProjects from "../context/ProjectContext";
 import { getColorCode } from "../helper/color";
+import { useSelector,useDispatch } from "react-redux";
+import { fetchProjects,addProject,updateProject,deleteProject } from "../slice/projectSlice";
 
 const Home = () => {
-  const { projects, isLoading } = useProjects();
+
+  const { projects, isLoading, error } = useSelector((state) => state.projects);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
 
@@ -15,7 +23,11 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <h1>Loading....</h1>;
+  }
+
+  if (error) {
+    return <h1>{error}</h1>;
   }
 
   const allprojects = projects.filter(

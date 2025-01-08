@@ -1,13 +1,18 @@
 import { Flex, Button } from "antd";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import ProjectsList from "./ProjectsList";
 import TaskModal from "./TaskModal";
-import useProjects from "../context/ProjectContext";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
+import { useSelector,useDispatch } from "react-redux";
+import { fetchProjects } from "../slice/projectSlice";
+
 const Sidebar = () => {
-  const { projects, isLoading } = useProjects();
+  const { projects, isLoading, error } = useSelector((state) => state.projects);
+    const dispatch = useDispatch();
+  
+   
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
@@ -20,8 +25,16 @@ const Sidebar = () => {
   const allprojects = projects.filter((project) => !project.isInboxProject);
   const favoriteProjects = projects.filter((project) => project.isFavorite);
 
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
   if (isLoading) {
     return <h1 className="text-center text-xl font-bold">Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1 className="text-center text-xl font-bold">{error}</h1>;
   }
 
   return (

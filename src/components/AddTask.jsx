@@ -1,9 +1,12 @@
 import React from "react";
 import { Flex, DatePicker, Input, Select, Divider, Button } from "antd";
 import dayjs from "dayjs";
-import useProjects from "../context/ProjectContext";
 import { getColorCode } from "../helper/color";
-
+import { useSelector,useDispatch } from "react-redux";
+import {
+  addTask,
+  updateTask,
+} from "../slice/taskSlice";
 const { TextArea } = Input;
 
 const AddTask = ({
@@ -11,13 +14,12 @@ const AddTask = ({
   setAddTaskIsOpen,
   setEditTaskId,
   localTask,
-  updateTask,
-  addTask,
   editTaskId,
   setLocalTask,
+  isUpdateTask,
 }) => {
-  const { projects } = useProjects();
-
+const { projects} = useSelector((state) => state.projects);
+const dispatch=useDispatch()
   const handleTextChange = (e) => {
     const { name, value } = e.target;
     setLocalTask((prev) => ({
@@ -50,15 +52,15 @@ const AddTask = ({
   };
 
   const handleTaskAddBtn = () => {
-    console.log(localTask);
-    if (updateTask) {
-      updateTask(editTaskId, localTask);
+    
+    if (isUpdateTask) {
+      dispatch(updateTask({taskId:editTaskId, newTask:localTask}));
     } else {
-      addTask(projectId, localTask);
+      dispatch(addTask({id:projectId, newTask:localTask}));
     }
     handleTaskCancelBtn();
   };
-  console.log(localTask);
+  
   return (
     <Flex gap="medium" vertical className="border-2 rounded-lg p-3">
       <TextArea

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Modal, Input, Select, Divider, Flex, Switch, Button } from "antd";
 import colors from "../helper/color";
+import { useDispatch } from "react-redux";
+import { addProject, updateProject } from "../slice/projectSlice";
 
 const ProjectModal = ({
   isModalOpen,
   setIsModalOpen,
   project,
   setProject,
-  addProject,
-  updateProject,
+  isUpdateProject,
 }) => {
+  const dispatch = useDispatch();
   const handleTextChage = (e) => {
     setProject({ ...project, name: e.target.value });
   };
@@ -19,18 +21,14 @@ const ProjectModal = ({
   };
 
   const handleOk = () => {
-    if (addProject) {
-      addProject(project);
+    if (isUpdateProject) {
+      dispatch(updateProject({ projectId: project.id, newProject: project }));
+    } else {
+      dispatch(addProject(project));
       setProject({
         name: "",
         color: "charcoal",
         isFavorite: false,
-      });
-    } else {
-      updateProject(project.id, {
-        name: project.name,
-        color: project.color,
-        isFavorite: project.isFavorite,
       });
     }
 
@@ -69,10 +67,19 @@ const ProjectModal = ({
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}  className="bg-gray-50 border-none hover:bg-gray-200 hover:text-black">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            className="bg-gray-50 border-none hover:bg-gray-200 hover:text-black"
+          >
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk} className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black">
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleOk}
+            className="bg-orange-500 text-white border-none hover:bg-orange-600 hover:text-black"
+          >
             {addProject ? "Add" : "Save"}
           </Button>,
         ]}

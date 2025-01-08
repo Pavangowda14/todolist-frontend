@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Button, Flex, Modal } from "antd";
-import useProjects from "../context/ProjectContext";
 import { MoreOutlined } from "@ant-design/icons";
 import ProjectModal from "./ProjectModal";
+import { useDispatch } from "react-redux";
+import { deleteProject, updateProject } from "../slice/projectSlice";
 
 const ProjectDropdown = ({ projectData }) => {
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-  const { upadteProject, deleteProject } = useProjects();
   const [project, setProject] = useState({
     id: projectData.id,
     name: projectData.name,
@@ -16,14 +17,19 @@ const ProjectDropdown = ({ projectData }) => {
   });
 
   const handleDeleteProject = () => {
-    deleteProject(projectData.id);
+    dispatch(deleteProject(projectData.id));
     setIsModalOpen(false);
   };
 
   const updateFavoriteProject = () => {
-    upadteProject(projectData.id, {
-      isFavorite: String(!projectData.isFavorite),
-    });
+    dispatch(
+      updateProject({
+        projectId: projectData.id,
+        newProject: {
+          isFavorite: String(!projectData.isFavorite),
+        },
+      })
+    );
     setIsModalOpen(false);
   };
 
@@ -75,7 +81,7 @@ const ProjectDropdown = ({ projectData }) => {
           setIsModalOpen={setIsProjectModalOpen}
           project={project}
           setProject={setProject}
-          updateProject={upadteProject}
+          isUpdateProject={true}
         />
       )}
     </>

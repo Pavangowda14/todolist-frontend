@@ -6,14 +6,12 @@ import {
   DownOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import useProjects from "../context/ProjectContext";
 import { getColorCode } from "../helper/color";
 import ProjectDropdown from "./ProjectDropdown";
 import { useNavigate } from "react-router-dom";
 
 
 const ProjectsList = ({ title, addProjectModal, projectList }) => {
-  const { addProject } = useProjects();
   const [isOpen, setIsOpen] = useState(false);
   const [project, setProject] = useState({
     name: "",
@@ -74,7 +72,7 @@ const navigate=useNavigate()
           setIsModalOpen={addProjectModal.setIsProjectModalOpen}
           project={project}
           setProject={setProject}
-          addProject={addProject}
+          isUpdateProject={false}
         />
       )}
     </Flex>
