@@ -6,9 +6,6 @@ import { getColorCode } from "../helper/color";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchProjects,
-  addProject,
-  updateProject,
-  deleteProject,
 } from "../slice/projectSlice";
 
 const Home = () => {

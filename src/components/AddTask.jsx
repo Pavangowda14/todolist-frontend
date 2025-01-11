@@ -2,11 +2,8 @@ import React from "react";
 import { Flex, DatePicker, Input, Select, Divider, Button } from "antd";
 import dayjs from "dayjs";
 import { getColorCode } from "../helper/color";
-import { useSelector,useDispatch } from "react-redux";
-import {
-  addTask,
-  updateTask,
-} from "../slice/taskSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask, updateTask } from "../slice/taskSlice";
 const { TextArea } = Input;
 
 const AddTask = ({
@@ -18,8 +15,8 @@ const AddTask = ({
   setLocalTask,
   isUpdateTask,
 }) => {
-const { projects} = useSelector((state) => state.projects);
-const dispatch=useDispatch()
+  const { projects } = useSelector((state) => state.projects);
+  const dispatch = useDispatch();
   const handleTextChange = (e) => {
     const { name, value } = e.target;
     setLocalTask((prev) => ({
@@ -52,15 +49,14 @@ const dispatch=useDispatch()
   };
 
   const handleTaskAddBtn = () => {
-    
     if (isUpdateTask) {
-      dispatch(updateTask({taskId:editTaskId, newTask:localTask}));
+      dispatch(updateTask({ taskId: editTaskId, newTask: localTask }));
     } else {
-      dispatch(addTask({id:projectId, newTask:localTask}));
+      dispatch(addTask({ id: projectId, newTask: localTask }));
     }
     handleTaskCancelBtn();
   };
-  
+
   return (
     <Flex gap="medium" vertical className="border-2 rounded-lg p-3">
       <TextArea

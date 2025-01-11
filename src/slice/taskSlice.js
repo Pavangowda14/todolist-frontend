@@ -59,7 +59,6 @@ const tasksSlice = createSlice({
       })
       .addCase(addTask.fulfilled, (state, action) => {
         if (action.payload.addedTask.projectId == action.payload.id) {
-            console.log(action.payload.addedTask)
           state.tasks.push(action.payload.addedTask);
         }
       })

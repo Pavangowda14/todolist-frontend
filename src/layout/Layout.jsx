@@ -23,14 +23,14 @@ const LayoutDesign = () => {
         <Sidebar />
       </Sider>
       <Layout className="bg-white">
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed((collapsed) => !collapsed)}
-            className={`text-lg w-[64px] h-[64px] ${
-              collapsed ? "left-0" : "left-[-50px]"
-            }`}
-          />
+        <Button
+          type="text"
+          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={() => setCollapsed((collapsed) => !collapsed)}
+          className={`text-lg w-[64px] h-[64px] ${
+            collapsed ? "left-0" : "left-[-50px]"
+          }`}
+        />
         <Content>
           <Outlet />
         </Content>

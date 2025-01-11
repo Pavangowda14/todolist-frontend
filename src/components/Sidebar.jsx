@@ -1,18 +1,16 @@
 import { Flex, Button } from "antd";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectsList from "./ProjectsList";
 import TaskModal from "./TaskModal";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchProjects } from "../slice/projectSlice";
 
 const Sidebar = () => {
   const { projects, isLoading, error } = useSelector((state) => state.projects);
-    const dispatch = useDispatch();
-  
-   
+  const dispatch = useDispatch();
+
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 

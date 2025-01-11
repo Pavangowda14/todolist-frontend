@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Button, Flex, Modal } from "antd";
+import { Button, Flex } from "antd";
 import ProjectModal from "./ProjectModal";
-import {
-  PlusOutlined,
-  DownOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DownOutlined, RightOutlined } from "@ant-design/icons";
 import { getColorCode } from "../helper/color";
 import ProjectDropdown from "./ProjectDropdown";
 import { useNavigate } from "react-router-dom";
-
 
 const ProjectsList = ({ title, addProjectModal, projectList }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +13,7 @@ const ProjectsList = ({ title, addProjectModal, projectList }) => {
     color: "charcoal",
     isFavorite: false,
   });
-const navigate=useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Flex vertical>
@@ -27,7 +22,7 @@ const navigate=useNavigate()
           color="default"
           variant="link"
           style={{ display: "inline", textAlign: "start", flexGrow: 1 }}
-          onClick={()=>navigate("/")}
+          onClick={() => navigate("/")}
         >
           {title}
         </Button>
@@ -59,9 +54,23 @@ const navigate=useNavigate()
           {projectList &&
             projectList.length &&
             projectList.map((project) => (
-              <Flex className="cursor-pointer"  justify="space-between" key={project.id}>
-                <p onClick={() => navigate(`/project/${project.id}`)}><span style={{ color: getColorCode(project.color),fontWeight:"bold" }}># </span> {project.name}</p>
-                <ProjectDropdown projectData={project}/>
+              <Flex
+                className="cursor-pointer"
+                justify="space-between"
+                key={project.id}
+              >
+                <p onClick={() => navigate(`/project/${project.id}`)}>
+                  <span
+                    style={{
+                      color: getColorCode(project.color),
+                      fontWeight: "bold",
+                    }}
+                  >
+                    #{" "}
+                  </span>{" "}
+                  {project.name}
+                </p>
+                <ProjectDropdown projectData={project} />
               </Flex>
             ))}
         </Flex>
