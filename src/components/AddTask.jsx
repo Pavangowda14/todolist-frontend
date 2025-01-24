@@ -40,14 +40,15 @@ const AddTask = ({
   const handleTaskCancelBtn = () => {
     setEditTaskId ? setEditTaskId(null) : setAddTaskIsOpen(false);
     setLocalTask({
+      id:"",
       content: "",
       description: "",
-      due_date: "",
+      due_date: null,
       priority: 1,
       project_id: projectId,
     });
   };
-
+  
   const handleTaskAddBtn = () => {
     if (isUpdateTask) {
       dispatch(updateTask({ taskId: editTaskId, newTask: localTask }));
@@ -56,7 +57,7 @@ const AddTask = ({
     }
     handleTaskCancelBtn();
   };
-
+console.log(localTask,localTask.due_date)
   return (
     <Flex gap="medium" vertical className="border-2 rounded-lg p-3">
       <TextArea
@@ -78,10 +79,10 @@ const AddTask = ({
       />
       <div className="flex space-x-2">
         <DatePicker
-          value={localTask.due_date ? dayjs(localTask.due?.date) : null}
+          value={localTask.due_date ? dayjs(localTask.due_date) : null}
           onChange={onDateChange}
         />
-        <Select
+        {/* <Select
           value={localTask.priority}
           style={{
             width: 120,
@@ -93,14 +94,14 @@ const AddTask = ({
             { value: 3, label: "Priority 3" },
             { value: 4, label: "Priority 4" },
           ]}
-        />
+        /> */}
       </div>
       <Divider />
       <Flex justify="space-between">
         <Select
-          value={localTask.project_id}
+          // value={localTask.project_id}
           style={{
-            width: 120,
+            width: 200,
           }}
           onChange={handleProjectChange}
           options={projects.map((project) => ({
@@ -115,7 +116,7 @@ const AddTask = ({
                 >
                   #{" "}
                 </span>
-                {project.name}
+                {project.project_name}
               </div>
             ),
           }))}

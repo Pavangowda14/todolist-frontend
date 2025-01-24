@@ -10,15 +10,14 @@ import {
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, deleteTask, closeTask } from "../slice/taskSlice";
-import { TodoistApi } from "@doist/todoist-api-typescript";
-
-const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_KEY);
+import axios from "axios";
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [projectDetail, setProjectDetail] = useState(null);
   const [addTaskIsOpen, setAddTaskIsOpen] = useState(false);
+  const [loading,setLoading]=useState(false)
   const { tasks, isLoading, error, completedTasks } = useSelector(
     (state) => state.tasks
   );
@@ -27,7 +26,7 @@ const ProjectDetail = () => {
   const [task, setTask] = useState({
     content: "",
     description: "",
-    due_date: "",
+    due_date: null,
     priority: 1,
     project_id: id,
   });
@@ -35,16 +34,21 @@ const ProjectDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProject = await api.getProject(id);
+        setLoading(true)
+        const response=await axios.get(`${import.meta.env.VITE_API_URL}/todo/api/project/${id}`)
+        const fetchedProject=response.data.data
         setProjectDetail(fetchedProject);
       } catch (error) {
         console.error("Error fetching project:", error);
+      }
+      finally{
+        setLoading(false)
       }
     };
     setTask({
       content: "",
       description: "",
-      due_date: "",
+      due_date: null,
       priority: 1,
       project_id: id,
     });
@@ -55,11 +59,12 @@ const ProjectDetail = () => {
 
   const handleEditBtn = (task) => {
     setTask({
+      id:task.id,
       content: task.content,
       description: task.description,
-      due_date: task.due?.due_date,
+      due_date: task.due_date || null,
       priority: task.priority,
-      project_id: task.projectId,
+      project_id: task.project_id,
     });
     setAddTaskIsOpen(true);
     setEditTaskId(task.id);
@@ -69,17 +74,18 @@ const ProjectDetail = () => {
     return <h1>Project not found</h1>;
   }
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <h1>Loading...</h1>;
   }
 
   if (error) {
     return <h1>error{error}</h1>;
   }
-
+  
+  
   return (
     <Flex gap="middle" vertical className="max-w-[700px] mx-auto">
-      <h2 className="text-xl font-bold">{projectDetail.name}</h2>
+      <h2 className="text-xl font-bold">{projectDetail.project_name}</h2>
       {tasks.length > 0 &&
         tasks.map((eachTask) => {
           if (editTaskId === eachTask.id) {
@@ -112,7 +118,7 @@ const ProjectDetail = () => {
               <Flex vertical>
                 <p>{eachTask.content}</p>
                 {eachTask.description && <p>{eachTask.description}</p>}
-                {eachTask.due && <p>{eachTask.due.date}</p>}
+                 <p>{eachTask.due_date}</p>
               </Flex>
               <Flex className="ml-auto">
                 <Button type="text" onClick={() => handleEditBtn(eachTask)}>

@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { Button, Flex } from "antd";
 import ProjectModal from "./ProjectModal";
 import { PlusOutlined, DownOutlined, RightOutlined } from "@ant-design/icons";
-import { getColorCode } from "../helper/color";
 import ProjectDropdown from "./ProjectDropdown";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/userContext";
 
 const ProjectsList = ({ title, addProjectModal, projectList }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {user}=useUserContext()
   const [project, setProject] = useState({
-    name: "",
+    project_name: "",
     color: "charcoal",
-    isFavorite: false,
+    is_favorite: false,
+    user_id:user?.id
   });
   const navigate = useNavigate();
 
@@ -62,13 +64,13 @@ const ProjectsList = ({ title, addProjectModal, projectList }) => {
                 <p onClick={() => navigate(`/project/${project.id}`)}>
                   <span
                     style={{
-                      color: getColorCode(project.color),
+                      color: project.color,
                       fontWeight: "bold",
                     }}
                   >
                     #{" "}
                   </span>{" "}
-                  {project.name}
+                  {project.project_name}
                 </p>
                 <ProjectDropdown projectData={project} />
               </Flex>

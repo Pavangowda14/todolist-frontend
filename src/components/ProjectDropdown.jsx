@@ -11,9 +11,10 @@ const ProjectDropdown = ({ projectData }) => {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [project, setProject] = useState({
     id: projectData.id,
-    name: projectData.name,
-    isFavorite: projectData.isFavorite,
+    project_name: projectData.project_name,
+    is_favorite: projectData.is_favorite,
     color: projectData.color,
+    user_id:projectData.user_id
   });
 
   const handleDeleteProject = () => {
@@ -26,7 +27,8 @@ const ProjectDropdown = ({ projectData }) => {
       updateProject({
         projectId: projectData.id,
         newProject: {
-          isFavorite: String(!projectData.isFavorite),
+          ...projectData,
+          is_favorite: !projectData.is_favorite,
         },
       })
     );
@@ -66,7 +68,7 @@ const ProjectDropdown = ({ projectData }) => {
             variant="link"
             onClick={updateFavoriteProject}
           >
-            {projectData.isFavorite
+            {projectData.is_favorite
               ? "Remove from Favorite"
               : "Add to Favorite"}
           </Button>

@@ -6,8 +6,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProjects } from "../slice/projectSlice";
+import { useUserContext } from "../context/userContext";
 
 const Sidebar = () => {
+  console.log("sidebar");
   const { projects, isLoading, error } = useSelector((state) => state.projects);
   const dispatch = useDispatch();
 
@@ -18,14 +20,11 @@ const Sidebar = () => {
     setIsTaskModalOpen(true);
   };
 
-  const navigate = useNavigate();
-  const inboxId = projects.find((project) => project.isInboxProject)?.id;
-  const allprojects = projects.filter((project) => !project.isInboxProject);
-  const favoriteProjects = projects.filter((project) => project.isFavorite);
+  // const inboxId = projects.find((project) => project.isInboxProject)?.id;
+  // const allprojects = projects.filter((project) => !project.isInboxProject);
+  const allprojects = projects;
+  const favoriteProjects = projects?.filter((project) => project.is_favorite);
 
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, [dispatch]);
 
   if (isLoading) {
     return <h1 className="text-center text-xl font-bold">Loading...</h1>;
@@ -50,7 +49,7 @@ const Sidebar = () => {
           </div>
           <span className="text-orange-600 font-semibold">Add task</span>
         </Button>
-        <Button
+        {/* <Button
           onClick={() => {
             navigate(`/project/${inboxId}`);
           }}
@@ -59,7 +58,7 @@ const Sidebar = () => {
           className="inline text-start"
         >
           Inbox
-        </Button>
+        </Button> */}
         {favoriteProjects && favoriteProjects.length > 0 && (
           <ProjectsList title="Favorite" projectList={favoriteProjects} />
         )}

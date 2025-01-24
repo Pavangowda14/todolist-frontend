@@ -1,7 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import { TodoistApi } from "@doist/todoist-api-typescript";
-
-const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_KEY);
+import axios from "axios";
+axios.defaults.withCredentials = true;
+const BASE_API=(`${import.meta.env.VITE_API_URL}/todo/api/project`)
 
 const initialState = {
   isLoading: true,
@@ -10,27 +10,28 @@ const initialState = {
 };
 
 export const fetchProjects = createAsyncThunk("fetchProjects", async () => {
-  const fetchedProjects = await api.getProjects();
+  const response=await axios.get(`${BASE_API}`)
+  const fetchedProjects=response.data.data
   return fetchedProjects;
 });
 
 export const addProject = createAsyncThunk("addProject", async (newProject) => {
-  const addedProject = await api.addProject(newProject);
-  return addedProject;
+  const response=await axios.post(`${BASE_API}/new`,newProject)
+  return response.data.data;
 });
 
 export const updateProject = createAsyncThunk(
   "updateProject",
   async ({projectId, newProject}) => {
-    const updatedProject = await api.updateProject(projectId, newProject);
-    return updatedProject;
+    const response=await axios.put(`${BASE_API}/update/${projectId}`,newProject)
+    return newProject;
   }
 );
 
 export const deleteProject = createAsyncThunk(
   "deleteProject",
   async (projectId) => {
-    await api.deleteProject(projectId);
+    const res=await axios.delete(`${BASE_API}/remove/${projectId}`)
     return projectId
   }
 );

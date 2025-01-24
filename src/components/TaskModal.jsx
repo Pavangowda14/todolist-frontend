@@ -10,7 +10,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
   const [task, setTask] = useState({
     content: "",
     description: "",
-    due_date: "",
+    due_date: null,
     priority: 1,
     project_id: "",
   });
@@ -50,7 +50,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
     setTask({
       content: "",
       description: "",
-      due_date: "",
+      due_date: null,
       priority: 1,
       project_id: "",
     });
@@ -68,7 +68,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
         >
           #{" "}
         </span>
-        {project.name}
+        {project.project_name}
       </div>
     ),
   }));
@@ -131,7 +131,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
         />
         <div className="flex space-x-2">
           <DatePicker placeholder="Due date" onChange={onDateChange} />
-          <Select
+          {/* <Select
             placeholder="Priority"
             style={{
               width: 150,
@@ -144,7 +144,7 @@ const TaskModal = ({ isModalOpen, setIsModalOpen }) => {
               { value: 3, label: "Priority 3" },
               { value: 4, label: "Priority 4" },
             ]}
-          />
+          /> */}
         </div>
         <Divider />
       </Modal>

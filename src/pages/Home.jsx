@@ -9,12 +9,10 @@ import {
 } from "../slice/projectSlice";
 
 const Home = () => {
+  console.log("home")
   const { projects, isLoading, error } = useSelector((state) => state.projects);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, [dispatch]);
 
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
@@ -31,8 +29,8 @@ const Home = () => {
     return <h1>error:{error}</h1>;
   }
 
-  const allprojects = projects.filter(
-    (project) => !project.isInboxProject && project.name.startsWith(searchText)
+  const allprojects = projects?.filter(
+    (project) => project?.project_name?.startsWith(searchText)
   );
 
   return (
@@ -58,13 +56,13 @@ const Home = () => {
               >
                 <span
                   style={{
-                    color: getColorCode(project.color),
+                    color: project.color,
                     fontWeight: "bold",
                   }}
                 >
                   #{" "}
-                </span>{" "}
-                {project.name}
+                </span>
+                {project.project_name}
               </p>
             ))}
           </ul>

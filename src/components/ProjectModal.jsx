@@ -3,6 +3,7 @@ import { Modal, Input, Select, Divider, Flex, Switch, Button } from "antd";
 import colors from "../helper/color";
 import { useDispatch } from "react-redux";
 import { addProject, updateProject } from "../slice/projectSlice";
+import { useUserContext } from "../context/userContext";
 
 const ProjectModal = ({
   isModalOpen,
@@ -13,9 +14,10 @@ const ProjectModal = ({
 }) => {
   const dispatch = useDispatch();
   const handleTextChage = (e) => {
-    setProject({ ...project, name: e.target.value });
+    setProject({ ...project, project_name: e.target.value });
   };
 
+  const {user}=useUserContext()
   const handleSelectChange = (value) => {
     setProject({ ...project, color: value });
   };
@@ -26,9 +28,10 @@ const ProjectModal = ({
     } else {
       dispatch(addProject(project));
       setProject({
-        name: "",
+        project_name: "",
         color: "charcoal",
-        isFavorite: false,
+        is_favorite: false,
+        user_id:user.id
       });
     }
 
@@ -40,10 +43,10 @@ const ProjectModal = ({
   };
 
   const onSwitchChange = (checked) => {
-    setProject({ ...project, isFavorite: checked });
+    setProject({ ...project, is_favorite: checked });
   };
   const options = colors.map((color) => ({
-    value: color.value,
+    value: color.code,
     label: (
       <Flex align="center" gap="small">
         <div
@@ -91,7 +94,7 @@ const ProjectModal = ({
             <Input
               showCount
               maxLength={120}
-              value={project.name}
+              value={project.project_name}
               onChange={handleTextChage}
             />
           </Flex>
@@ -105,7 +108,7 @@ const ProjectModal = ({
             />
           </Flex>
           <Flex gap="small" align="center">
-            <Switch value={project.isFavorite} onChange={onSwitchChange} />
+            <Switch value={project.is_favorite} onChange={onSwitchChange} />
             <label className="text-lg">Add to favorites</label>
           </Flex>
         </Flex>

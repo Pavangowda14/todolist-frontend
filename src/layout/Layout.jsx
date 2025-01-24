@@ -1,13 +1,20 @@
 import { Outlet } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Layout } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import Sidebar from "../components/Sidebar";
+import { fetchProjects } from "../slice/projectSlice";
+import { useDispatch } from "react-redux";
 
 const { Sider, Content, Header } = Layout;
 
 const LayoutDesign = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const dispatch=useDispatch()
+
+    useEffect(() => {
+    dispatch(fetchProjects());
+  }, []);
 
   return (
     <Layout className="min-h-[100vh] bg-white">
