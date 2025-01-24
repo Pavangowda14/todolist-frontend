@@ -40,7 +40,7 @@ export const UserContextProvider = ({ children }) => {
   const handleSingup = async (values) => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/todo/api/user/register`,
+        `${import.meta.env.VITE_API_URL}/todo/api/user/register`,
         values
       );
       if (res.data) {
